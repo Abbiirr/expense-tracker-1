@@ -66,7 +66,7 @@ class SimpleClassifier:
 class OllamaClassifier:
     """Ollama-based classifier with fallback"""
 
-    def __init__(self, host="http://localhost:11434", model="qwen2:0.5b"):
+    def __init__(self, host="http://10.112.30.10:11434", model="qwen3:8b"):
         self.host = host
         self.model = model
         self.fallback = SimpleClassifier()

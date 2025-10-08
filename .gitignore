@@ -3,3 +3,7 @@
 .idea/
 __pycache__/
 bkash_extracted_transactions_text.json
+
+statement.pdf
+
+output.json
