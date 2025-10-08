@@ -214,7 +214,7 @@ def create_visualizations(chart_data: Dict):
 
     df = pd.DataFrame(chart_data['categories'])
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([3, 2])
 
     with col1:
         # Pie chart
@@ -229,10 +229,29 @@ def create_visualizations(chart_data: Dict):
         fig_pie.update_traces(
             textposition='inside',
             textinfo='percent+label',
-            hovertemplate='<b>%{label}</b><br>' +
-                          'Amount: ৳%{value:,.0f}<br>' +
-                          'Percentage: %{customdata[0]:.1f}%<br>' +
-                          'Transactions: %{customdata[1]}'
+            textfont=dict(size=16, family='Arial Black', color='black'),
+            hovertemplate='<b style="font-size:16px">%{label}</b><br>' +
+                          '<span style="font-size:14px">Amount: ৳%{value:,.0f}</span><br>',
+            hoverlabel=dict(
+                bgcolor="black",
+                font_size=16,
+                font_family="Arial"
+            )
+        )
+
+        fig_pie.update_layout(
+            height=700,  # Increased from 600
+            title=dict(
+                text='Spending Distribution',
+                font=dict(size=24, family='Arial Black')  # Bigger title
+            ),
+            font=dict(size=14),  # Larger default font
+            legend=dict(
+                font=dict(size=14),  # Bigger legend text
+                orientation='v',
+                yanchor='middle',
+                y=0.5
+            )
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
