@@ -263,7 +263,9 @@ def create_visualizations(chart_data: Dict):
                 y=df['amount'][:10],
                 text=[f"৳{x:,.0f}" for x in df['amount'][:10]],
                 textposition='auto',
-                marker_color=px.colors.qualitative.Set3[:10]
+                marker_color=px.colors.qualitative.Set3[:10],
+                hovertemplate='%{x}<br>Amount: ৳%{y:,.0f}<extra></extra>',  # full value, no "k"
+                hoverlabel=dict(bgcolor='black', font_size=14, font_family='Arial')
             )
         ])
         fig_bar.update_layout(
