@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .total {
+            text-align: center;
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .currency {
+            font-weight: bold;
+            color: #667eea;
+        }
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin-bottom: 40px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .stat-card h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        .stat-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Analysis</h1>
+        <div class="total">Total Spending: <span class="currency">BDT 128,015.14</span></div>
+
+        <div class="chart-container">
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Cashout</h3>
+                <div class="stat-amount">BDT 40,700</div>
+                <div class="stat-info">31.79% • 21 transactions</div>
+            </div>
+            <div class="stat-card">
+                <h3>Food</h3>
+                <div class="stat-amount">BDT 30,898</div>
+                <div class="stat-info">24.14% • 27 transactions</div>
+            </div>
+            <div class="stat-card">
+                <h3>Shopping</h3>
+                <div class="stat-amount">BDT 27,409</div>
+                <div class="stat-info">21.41% • 19 transactions</div>
+            </div>
+            <div class="stat-card">
+                <h3>Education</h3>
+                <div class="stat-amount">BDT 23,808</div>
+                <div class="stat-info">18.6% • 5 transactions</div>
+            </div>
+            <div class="stat-card">
+                <h3>Entertainment</h3>
+                <div class="stat-amount">BDT 5,075</div>
+                <div class="stat-info">3.96% • 1 transactions</div>
+            </div>
+            <div class="stat-card">
+                <h3>Transportation</h3>
+                <div class="stat-amount">BDT 119</div>
+                <div class="stat-info">0.09% • 1 transactions</div>
+            </div>
+            <div class="stat-card">
+                <h3>Utility Bill</h3>
+                <div class="stat-amount">BDT 6</div>
+                <div class="stat-info">0.0% • 1 transactions</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const data = {"categories": [{"name": "Cashout", "amount": 40700.5, "percentage": 31.79, "count": 21}, {"name": "Food", "amount": 30898.2, "percentage": 24.14, "count": 27}, {"name": "Shopping", "amount": 27408.7, "percentage": 21.41, "count": 19}, {"name": "Education", "amount": 23808.0, "percentage": 18.6, "count": 5}, {"name": "Entertainment", "amount": 5075.0, "percentage": 3.96, "count": 1}, {"name": "Transportation", "amount": 118.74, "percentage": 0.09, "count": 1}, {"name": "Utility Bill", "amount": 6.0, "percentage": 0.0, "count": 1}], "total": 128015.14};
+
+        const ctx = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.categories.map(c => c.name),
+                datasets: [{
+                    data: data.categories.map(c => c.amount),
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF',
+                        '#4BC0C0', '#FF6384', '#36A2EB', '#FFCE56'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                return data.labels.map((label, i) => ({
+                                    text: `${label} (${data.datasets[0].data[i].toLocaleString()})`,
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i
+                                }));
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const category = data.categories[context.dataIndex];
+                                return [
+                                    `${category.name}: BDT ${category.amount.toLocaleString()}`,
+                                    `${category.percentage}% of total`,
+                                    `${category.count} transactions`
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

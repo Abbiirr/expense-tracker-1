@@ -1,0 +1,9 @@
+1,2025-10-01,15.5,Restaurant lunch
+2,2025-10-02,2.75,Bus ticket
+3,2025-10-03,50.0,Electricity bill
+[
+  {"id": 1, "date": "2025-10-01", "amount": 15.5, "description": "Restaurant lunch"},
+  {"id": 2, "date": "2025-10-02", "amount": 2.75, "description": "Bus ticket"},
+  {"id": 3, "date": "2025-10-03", "amount": 50.0, "description": "Electricity bill"}
+]
+

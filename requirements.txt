@@ -1,0 +1,20 @@
+fastapi
+uvicorn
+pydantic
+scikit-learn
+
+# expense-categorizer/requirements.txt
+# Core dependencies
+transformers>=4.30.0
+torch>=2.0.0
+pandas>=2.0.0
+
+# Optional but recommended
+openpyxl>=3.1.0  # For Excel export
+rapidfuzz>=3.0.0  # For fuzzy matching enhancements
+
+
+python-multipart
+google-generativeai
+
+python-dotenv
